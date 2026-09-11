@@ -1,6 +1,4 @@
-from app.infrastructure.database import async_session, Base, engine
-
-
+from app.infrastructure.database import async_session
 async def get_db():
     async with async_session() as session:
         yield session

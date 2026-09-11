@@ -1,12 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+import uuid
 
 class DocumentCreate(BaseModel):
     title: str  
     content: str
-    author_id: int
+    user_id: uuid.UUID  
 
 class DocumentResponse(BaseModel):
-    id: str
+    model_config = ConfigDict(from_attributes=True)
+    id: uuid.UUID
     title: str
     content: str
-    author_id: int
+    user_id: uuid.UUID
