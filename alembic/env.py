@@ -3,6 +3,7 @@ from logging.config import fileConfig
 
 from app.infrastructure.database import Base
 from app.document.model import Document
+from app.user.model import User
 from app.core.config import settings
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
