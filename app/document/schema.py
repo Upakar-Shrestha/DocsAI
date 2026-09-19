@@ -3,8 +3,7 @@ import uuid
 
 class DocumentCreate(BaseModel):
     title: str  
-    content: str
-    user_id: uuid.UUID  
+    content: str 
 
 class DocumentResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)

@@ -1,3 +1,4 @@
+import uuid
 from app.document.model import Document
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -7,11 +8,11 @@ async def get_all_documents(db: AsyncSession) -> list[Document]:
     result = await db.execute(select(Document))
     return result.scalars().all()
 
-async def create_document(db: AsyncSession, document: DocumentCreate) -> Document:
+async def create_document(db: AsyncSession, document: DocumentCreate, user_id: uuid.UUID) -> Document:
     new_document = Document(
         title=document.title,
         content=document.content,
-        user_id=document.user_id,
+        user_id=user_id,
     )
 
     db.add(new_document)

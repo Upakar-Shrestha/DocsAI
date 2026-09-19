@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Text, DateTime, ForeignKey, func, text
 from datetime import datetime
 import uuid
+from sqlalchemy import ForeignKey
 
 class Document(Base):
     __tablename__ = "documents"
@@ -16,7 +17,7 @@ class Document(Base):
 
     content: Mapped[str] = mapped_column(Text, nullable=False)
 
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
