@@ -1,8 +1,10 @@
+import uuid
 from app.api.dependencies import get_current_user, get_db
 from app.core.schema import ResponseEnvelope
 from app.document import service
-from app.document.schema import DocumentCreate, DocumentResponse
-from fastapi import APIRouter, Depends
+from app.document.service import save_uploaded_file, create_document, get_all_documents
+from app.document.schema import DocumentResponse
+from fastapi import APIRouter, Depends, File, Form, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.user.model import User
@@ -20,9 +22,29 @@ async def get_documents(db: AsyncSession = Depends(get_db), current_user: User =
     )   
 
 @router.post("/documents", status_code=201, response_model=ResponseEnvelope[DocumentResponse])
-async def create_document(document: DocumentCreate, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+async def create_document(
+    title: str = Form(...),
+    file: UploadFile = File(...), 
+    db: AsyncSession = Depends(get_db), 
+    current_user: User = Depends(get_current_user)):
+
     """Create a new document."""
-    new_document = await service.create_document(db, document, current_user.id)
+
+    document_id = uuid.uuid4()
+
+    file_path = await service.save_uploaded_file(
+        file=file,
+        document_id=document_id,
+    )
+
+    new_document = await service.create_document(
+        db=db,
+        document_id=document_id,
+        title=title,
+        file_path=file_path,
+        user_id=current_user.id,
+    )
+
     return ResponseEnvelope(
         success=True,
         message="Document created successfully.",
