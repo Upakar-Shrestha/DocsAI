@@ -10,9 +10,9 @@ from app.user.model import User
 router = APIRouter(tags=["Documents"])
 
 @router.get("/documents", status_code=200, response_model=ResponseEnvelope[list[DocumentResponse]])
-async def get_documents(db: AsyncSession = Depends(get_db)):
+async def get_documents(db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     """Get all documents."""
-    documents = await service.get_all_documents(db)
+    documents = await service.get_all_documents(db, current_user.id)
     return ResponseEnvelope(
         success=True,
         message="Documents retrieved successfully",

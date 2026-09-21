@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.document.schema import DocumentCreate
 
-async def get_all_documents(db: AsyncSession) -> list[Document]:
-    result = await db.execute(select(Document))
+async def get_all_documents(db: AsyncSession, user_id: uuid.UUID) -> list[Document]:
+    result = await db.execute(select(Document).where(Document.user_id == user_id))
     return result.scalars().all()
 
 async def create_document(db: AsyncSession, document: DocumentCreate, user_id: uuid.UUID) -> Document:
