@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     UPLOAD_DIR: str
     MAX_UPLOAD_SIZE_MB: int
+    GEMINI_API_KEY: str
 
 
 settings = Settings()

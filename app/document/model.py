@@ -7,6 +7,8 @@ from datetime import datetime
 import uuid
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import UniqueConstraint
+from pgvector.sqlalchemy import Vector
+
 
 
 class DocumentStatus(str, enum.Enum):
@@ -53,6 +55,8 @@ class Chunk(Base):
     content: Mapped[str] = mapped_column(Text, nullable=False)
 
     chunk_index: Mapped[int] = mapped_column(nullable=False)
+
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(768), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

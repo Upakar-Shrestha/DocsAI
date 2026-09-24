@@ -13,3 +13,14 @@ class DocumentResponse(BaseModel):
     content: str | None
     user_id: uuid.UUID
     status: DocumentStatus
+
+class ChatRequest(BaseModel):
+    question: str
+
+class ChatSourceChunk(BaseModel):
+    chunk_index: int
+    content: str
+
+class ChatResponse(BaseModel):
+    answer: str
+    sources: list[ChatSourceChunk]
